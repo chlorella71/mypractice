@@ -81,7 +81,7 @@ public class MemberMenu {
       return;
     }
 
-    Member member = 
+    Member member =
   }
 
 }
