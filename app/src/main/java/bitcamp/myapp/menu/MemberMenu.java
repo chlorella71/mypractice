@@ -1,4 +1,7 @@
-package bitcamp.myapp;
+package bitcamp.myapp.menu;
+
+import bitcamp.myapp.vo.Member;
+import bitcamp.util.Prompt;
 
 public class MemberMenu {
 
@@ -15,9 +18,7 @@ public class MemberMenu {
     System.out.println("0. 이전");
   }
 
-  Static
-
-  void execute() {
+  static void execute() {
     printMenu();
 
     while (true) {
@@ -81,7 +82,50 @@ public class MemberMenu {
       return;
     }
 
-    Member member =
+    Member member = members[index];
+    System.out.printf("이메일: %s\n", member.email);
+    System.out.printf("이름: %s\n", member.name);
+    System.out.printf("가입일: %s\n", member.createdDate);
   }
 
+  static void modify() {
+    System.out.println("회원 변경:");
+
+    int index = Integer.parseInt(Prompt.input("번호? "));
+    if (index < 0 || index >= length) {
+      System.out.println("회원 번호가 유효하지 않습니다.");
+      return;
+    }
+
+    Member member = members[index];
+    member.email = Prompt.input("이메일(%s)? ", member.email);
+    member.name = Prompt.input("이름(%s)? ", member.name);
+    member.password = Prompt.input("새 암호?");
+    member.createdDate = Prompt.input("가입일(%s) ?", member.createdDate);
+  }
+
+  static void delete() {
+    System.out.println("회원 삭제:");
+
+    int index = Integer.parseInt(Prompt.input("번호? "));
+    if (index < 0 || index >= length) {
+      System.out.println("회원 번호가 유효하지 않습니다.");
+      return;
+    }
+
+    for (int i = index; i < (length -1); i++) {
+      members[i] = members[i + 1];
+    }
+    members[--length] = null;
+  }
+
+  static void list() {
+    System.out.println("회원 목록:");
+    System.out.printf("%-10s\t%30s\t%s\n", "이름", "이메일", "가입일");
+
+    for (int i = 0; i < length; i++) {
+      Member member = members[i];
+      System.out.printf("%-20s\t%30s\t%s\n", member.name, member.email, member.createdDate);
+    }
+  }
 }

@@ -3,6 +3,9 @@
  */
 package bitcamp.myapp;
 
+import bitcamp.myapp.menu.MainMenu;
+import bitcamp.util.Prompt;
+
 public class App {
   /*public String getGreeting() {
   return "Hello World!";
@@ -14,7 +17,7 @@ public class App {
 
 
   public static void main(String[] args) {
-    MainMenu.mainMenu();
-Prompt.close();
+    MainMenu.execute();
+    Prompt.close();
   }
 }

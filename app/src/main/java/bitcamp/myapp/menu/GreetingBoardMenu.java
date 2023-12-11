@@ -1,13 +1,16 @@
-package bitcamp.myapp;
+package bitcamp.myapp.menu;
 
-public class BoardMenu {
+import bitcamp.myapp.vo.Board;
+import bitcamp.util.Prompt;
+
+public class GreetingBoardMenu {
 
   static Board[] boards = new Board[3];
   static int length = 0;
 
 
   static void printMenu() {
-    System.out.println("[게시글]");
+    System.out.println("[가입인사]");
     System.out.println("1. 등록");
     System.out.println("2. 조회");
     System.out.println("3. 변경");
@@ -20,7 +23,7 @@ public class BoardMenu {
     printMenu();
 
     while (true) {
-      String input = Prompt.input("메인/게시글> ");
+      String input = Prompt.input("메인/가입인사> ");
 
       switch (input) {
         case "1":
@@ -50,7 +53,7 @@ public class BoardMenu {
   }
 
   static void add() {
-    System.out.println("게시글 등록:");
+    System.out.println("가입인사 등록:");
 
     if (length == boards.length) {
       int oldSize = boards.length;
@@ -74,11 +77,11 @@ public class BoardMenu {
   }
 
   static void view() {
-    System.out.println("게시글 조회:");
+    System.out.println("가입인사 조회:");
 
     int index = Integer.parseInt(Prompt.input("번호? "));
     if (index < 0 || index >= length) {
-      System.out.println("게시글 번호가 유효하지 않습니다.");
+      System.out.println("가입인사 번호가 유효하지 않습니다.");
       return;
     }
 
@@ -90,11 +93,11 @@ public class BoardMenu {
   }
 
   static void modify() {
-    System.out.println("게시글 변경");
+    System.out.println("가입인사 변경");
 
     int index = Integer.parseInt(Prompt.input("번호? "));
     if (index < 0 || index >= length) {
-      System.out.println("게시글 번호가 유효하지 않습니다.");
+      System.out.println("가입인사 번호가 유효하지 않습니다.");
       return;
     }
 
@@ -106,11 +109,11 @@ public class BoardMenu {
   }
 
   static void delete() {
-    System.out.println("게시글 삭제:");
+    System.out.println("가입인사 삭제:");
 
     int index = Integer.parseInt(Prompt.input("번호? "));
     if (index < 0 || index >= length) {
-      System.out.println("게시글 번호가 유효하지 않습니다.");
+      System.out.println("가입인사 번호가 유효하지 않습니다.");
       return;
     }
 
@@ -121,7 +124,7 @@ public class BoardMenu {
   }
 
   static void list() {
-    System.out.println("게시글 목록:");
+    System.out.println("가입인사 목록:");
     System.out.printf("%-20s\t%-10s\t%s\n", "제목", "작성자", "작성일");
 
     for(int i = 0; i < length; i++) {
