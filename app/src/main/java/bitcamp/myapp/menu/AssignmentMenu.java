@@ -1,18 +1,17 @@
 package bitcamp.myapp.menu;
 
+import bitcamp.menu.Menu;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.util.Prompt;
 
-public class AssignmentMenu {
+public class AssignmentMenu implements Menu {
 
   Prompt prompt;
-  String title;
-  Assignment[] assignments = new Assignment[3];
-  int length = 0;
+AssignmentRepository assignmentRepository;
 
-  public AssignmentMenu(String title, Prompt prompt) {
-    this.title = title;
+  public AssignmentMenu(Prompt prompt, AssignmentRepository assignmentRepository) {
     this.prompt = prompt;
+    this.assignmentRepository = assignmentRepository;
   }
   void printMenu() {
     System.out.println("[과제]");
@@ -25,7 +24,7 @@ public class AssignmentMenu {
   }
 
 
-  void execute() {
+  public void execute() {
     printMenu();
 
     while (true) {
@@ -33,19 +32,19 @@ public class AssignmentMenu {
 
       switch (input) {
         case "1":
-          add();
+          this.add();
           break;
         case "2":
-          view();
+          this.view();
           break;
         case "3":
-          modify();
+          this.modify();
           break;
         case "4":
-          delete();
+          this.delete();
           break;
         case "5":
-          list();
+          this.list();
           break;
         case "0":
           return;
@@ -58,83 +57,60 @@ public class AssignmentMenu {
     }
   }
 
-  void add() {
-    System.out.println("과제 등록:");
 
-    if (this.length == this.assignments.length) {
-      int oldSize = this.assignments.length;
-      int newSize = oldSize + (oldSize / 2);
 
-      Assignment[] arr = new Assignment[newSize];
-      for(int i = 0; i < oldSize; i++) {
-        arr[i] = this.assignments[i];
-      }
-
-      this.assignments = arr;
-    }
-
-    Assignment assignment = new Assignment();
-    assignment.title = this.prompt.input("과제명? ");
-    assignment.content = this.prompt.input("내용? ");
-    assignment.deadline = this.prompt.input("제출 마감일? ");
-
-    this.assignments[this.length] = assignment;
-    this.length++;
-
-  }
-
-  static void view() {
+  void view() {
     System.out.println("과제 조회:");
 
-    int index = Integer.parseInt(Prompt.input("번호? "));
-    if (index < 0 || index >= length) {
+    int index = this.prompt.inputInt("번호? ");
+    if (index < 0 || index >= this.assignmentRepository.length) {
       System.out.println("과제 번호가 유효하지 않습니다.");
       return;
     }
 
-    Assignment assignment = assignments[index];
+    Assignment assignment = this.assignmentRepository.assignments[index];
     System.out.printf("과제명: %s\n", assignment.title);
     System.out.printf("내용: %s\n", assignment.content);
     System.out.printf("제출 마감일: %s\n", assignment.deadline);
   }
 
-  static void modify() {
+  void modify() {
     System.out.println("과제 변경:");
 
-    int index = Integer.parseInt(Prompt.input("번호? "));
-    if (index < 0 || index >= length) {
+    int index = this.prompt.inputInt("번호? ");
+    if (index < 0 || index >= this.assignmentRepository.length) {
       System.out.println("과제 번호가 유효하지 않습니다.");
       return;
     }
 
-    Assignment assignment = assignments[index];
-    assignment.title = Prompt.input("과제명(%s)? ", assignment.title);
-    assignment.content = Prompt.input("내용(%s)? ", assignment.content);
-    assignment.deadline = Prompt.input("제출 마감일(%s)? ", assignment.deadline);
+    Assignment assignment = this.assignmentRepository.assignments[index];
+    assignment.title = this.prompt.input("과제명(%s)? ", assignment.title);
+    assignment.content = this.prompt.input("내용(%s)? ", assignment.content);
+    assignment.deadline = this.prompt.input("제출 마감일(%s)? ", assignment.deadline);
   }
 
-  static void delete() {
+  void delete() {
     System.out.println("과제 삭제:");
 
-    int index = Integer.parseInt(Prompt.input("번호? "));
-    if (index < 0 || index >= length) {
+    int index = this.prompt.inputInt("번호? ");
+    if (index < 0 || index >= assignmentRepository.length) {
       System.out.println("과제 번호가 유효하지 않습니다.");
       return;
     }
 
-    for (int i = index; i < (length - 1); i++) {
-      assignments[i] = assignments[i + 1];
+    for (int i = index; i < (assignmentRepository.length - 1); i++) {
+      assignmentRepository.assignments[i] = assignmentRepository.assignments[i + 1];
     }
-    length--;
-    assignments[length] = null;
+    assignmentRepository.length--;
+    assignmentRepository.assignments[assignmentRepository.length] = null;
   }
 
-  static void list() {
+  void list() {
     System.out.println("과제 목록:");
     System.out.printf("%-20s\t%s\n", "과제", "제출마감일");
 
-    for (int i = 0; i < length; i++) {
-      Assignment assignment = assignments[i];
+    for (int i = 0; i < this.assignmentRepository.length; i++) {
+      Assignment assignment = this.assignmentRepository.assignments[i];
       System.out.printf("%-20s\t%s\n", assignment.title, assignment.deadline);
     }
   }

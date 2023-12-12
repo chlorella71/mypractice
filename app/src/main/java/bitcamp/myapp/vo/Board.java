@@ -1,10 +1,10 @@
 package bitcamp.myapp.vo;
 
 public class Board {
-  static String title;
-  static String content;
-  static String writer;
-  static String createdDate;
+  public String title;
+  public String content;
+  public String writer;
+  public String createdDate;
 
 
 }
