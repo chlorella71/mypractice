@@ -3,8 +3,15 @@
  */
 package bitcamp.myapp;
 
-import bitcamp.myapp.menu.AssignmentRepository;
-import bitcamp.myapp.menu.MainMenu;
+import bitcamp.menu.MenuGroup;
+import bitcamp.menu.MenuItem;
+import bitcamp.myapp.handler.assignment.AssignmentRepository;
+import bitcamp.myapp.handler.assignment.AssignmentAddHandler;
+import bitcamp.myapp.handler.assignment.AssignmentViewHandler;
+import bitcamp.myapp.handler.assignment.AssignmentModifyHandler;
+import bitcamp.myapp.handler.assignment.AssignmentDeleteHandler;
+import bitcamp.myapp.handler.assignment.AssignmentListHandler;
+
 import bitcamp.util.Prompt;
 
 public class App {
@@ -19,11 +26,18 @@ public class App {
 
   public static void main(String[] args) throws Exception {
     Prompt prompt = new Prompt(System.in);
-    new MainMenu(prompt).execute();
 
     AssignmentRepository assignmentRepository = new AssignmentRepository();
 
+    MenuGroup mainMenu = new MenuGroup("메인");
 
+    MenuGroup assignmentMenu = new MenuGroup("과제");
+    assignmentMenu.add(new MenuItem("등록", new AssignmentAddHandler(assignmentRepository, prompt)));
+    assignmentMenu.add(new MenuItem("조회", new AssignmentViewHandler(assignmentRepository, prompt)));
+    assignmentMenu.add(new MenuItem("수정", new AssignmentModifyHandler(assignmentRepository, prompt)));
+    assignmentMenu.add(new MenuItem("삭제", new AssignmentDeleteHandler(assignmentRepository, prompt)));
+    assignmentMenu.add(new MenuItem("목록", new AssignmentListHandler(assignmentRepository, prompt)));
+    mainMenu.add(assignmentMenu);
     prompt.close();
   }
 }
