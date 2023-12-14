@@ -15,6 +15,7 @@ public class MenuGroup implements Menu {
 
   @Override
   public void execute(Prompt prompt) {
+    this.printMenu();
 
     while (true) {
       String input = prompt.input("%s> ", this.title);
@@ -36,7 +37,7 @@ public class MenuGroup implements Menu {
     }
   }
 
-  void printMenu() {
+  private void printMenu() {
       System.out.printf("[%s]\n", this.title);
 
       for (int i = 0; i < this.menuSize; i++) {

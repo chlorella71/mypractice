@@ -11,7 +11,19 @@ import bitcamp.myapp.handler.assignment.AssignmentViewHandler;
 import bitcamp.myapp.handler.assignment.AssignmentModifyHandler;
 import bitcamp.myapp.handler.assignment.AssignmentDeleteHandler;
 import bitcamp.myapp.handler.assignment.AssignmentListHandler;
-
+import bitcamp.myapp.handler.board.BoardAddHandler;
+import bitcamp.myapp.handler.board.BoardDeleteHandler;
+import bitcamp.myapp.handler.board.BoardListHandler;
+import bitcamp.myapp.handler.board.BoardModifyHandler;
+import bitcamp.myapp.handler.board.BoardViewHandler;
+import bitcamp.myapp.handler.board.BoardRepository;
+import bitcamp.myapp.handler.Member.MemberRepository;
+import bitcamp.myapp.handler.Member.MemberViewHandler;
+import bitcamp.myapp.handler.Member.MemberModifyHandler;
+import bitcamp.myapp.handler.Member.MemberAddHandler;
+import bitcamp.myapp.handler.Member.MemberDeleteHandler;
+import bitcamp.myapp.handler.Member.MemberListHandler;
+import bitcamp.myapp.handler.HelpHandler;
 import bitcamp.util.Prompt;
 
 public class App {
@@ -28,6 +40,9 @@ public class App {
     Prompt prompt = new Prompt(System.in);
 
     AssignmentRepository assignmentRepository = new AssignmentRepository();
+    BoardRepository boardRepository = new BoardRepository();
+    MemberRepository memberRepository = new MemberRepository();
+    BoardRepository greetingRepository = new BoardRepository();
 
     MenuGroup mainMenu = new MenuGroup("메인");
 
@@ -38,6 +53,34 @@ public class App {
     assignmentMenu.add(new MenuItem("삭제", new AssignmentDeleteHandler(assignmentRepository, prompt)));
     assignmentMenu.add(new MenuItem("목록", new AssignmentListHandler(assignmentRepository, prompt)));
     mainMenu.add(assignmentMenu);
+
+    MenuGroup BoardMenu = new MenuGroup("게시글");
+    BoardMenu.add(new MenuItem("등록", new BoardAddHandler(boardRepository, prompt)));
+    BoardMenu.add(new MenuItem("조회", new BoardViewHandler(boardRepository, prompt)));
+    BoardMenu.add(new MenuItem("수정", new BoardModifyHandler(boardRepository, prompt)));
+    BoardMenu.add(new MenuItem("삭제", new BoardDeleteHandler(boardRepository, prompt)));
+    BoardMenu.add(new MenuItem("목록", new BoardListHandler(boardRepository, prompt)));
+    mainMenu.add(BoardMenu);
+
+    MenuGroup MemberMenu = new MenuGroup("회원");
+    MemberMenu.add(new MenuItem("등록", new MemberAddHandler(memberRepository, prompt)));
+    MemberMenu.add(new MenuItem("조회", new MemberViewHandler(memberRepository, prompt)));
+    MemberMenu.add(new MenuItem("수정", new MemberModifyHandler(memberRepository, prompt)));
+    MemberMenu.add(new MenuItem("삭제", new MemberDeleteHandler(memberRepository, prompt)));
+    MemberMenu.add(new MenuItem("목록", new MemberListHandler(memberRepository, prompt)));
+    mainMenu.add(MemberMenu);
+
+    MenuGroup greetingMenu = new MenuGroup("가입인사");
+    BoardMenu.add(new MenuItem("등록", new BoardAddHandler(greetingRepository, prompt)));
+    BoardMenu.add(new MenuItem("조회", new BoardViewHandler(greetingRepository, prompt)));
+    BoardMenu.add(new MenuItem("수정", new BoardModifyHandler(greetingRepository, prompt)));
+    BoardMenu.add(new MenuItem("삭제", new BoardDeleteHandler(greetingRepository, prompt)));
+    BoardMenu.add(new MenuItem("목록", new BoardListHandler(greetingRepository, prompt)));
+    mainMenu.add(greetingMenu);
+
+    mainMenu.add(new MenuItem("도움말", new HelpHandler()));
+
+    mainMenu.execute(prompt);
     prompt.close();
   }
 }

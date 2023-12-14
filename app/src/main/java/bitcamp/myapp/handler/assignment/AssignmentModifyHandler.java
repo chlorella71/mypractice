@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.assignment;
 
+import bitcamp.util.AnsiEscape;
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.vo.Assignment;
@@ -17,17 +18,20 @@ public class AssignmentModifyHandler implements MenuHandler {
 
   @Override
   public void action(Menu menu) {
-    System.out.println("과제 변경:");
+    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR);
 
     int index = this.prompt.inputInt("번호? ");
-    if (index < 0 || index >= this.assignmentRepository.length) {
+    Assignment old = this.assignmentRepository.get(index);
+    if (old == null) {
       System.out.println("과제 번호가 유효하지 않습니다.");
       return;
     }
 
-    Assignment assignment = this.assignmentRepository.assignments[index];
+    Assignment assignment = new Assignment();
     assignment.title = this.prompt.input("과제명(%s)? ", assignment.title);
     assignment.content = this.prompt.input("내용(%s)? ", assignment.content);
     assignment.deadline = this.prompt.input("제출 마감일(%s)? ", assignment.deadline);
+
+    this.assignmentRepository.set(index, assignment);
   }
 }
