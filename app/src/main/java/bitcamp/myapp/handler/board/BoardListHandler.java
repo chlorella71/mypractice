@@ -1,19 +1,17 @@
 package bitcamp.myapp.handler.board;
 
+import java.util.ArrayList;
 import bitcamp.util.AnsiEscape;
 import bitcamp.menu.MenuHandler;
 import bitcamp.menu.Menu;
 import bitcamp.myapp.vo.Board;
-import bitcamp.util.Prompt;
 
 public class BoardListHandler implements MenuHandler {
 
-  Prompt prompt;
-  BoardRepository boardRepository;
+  ArrayList<Board> objectRepository;
 
-  public BoardListHandler(BoardRepository boardRepository, Prompt prompt) {
-    this.boardRepository = boardRepository;
-    this.prompt = prompt;
+  public BoardListHandler(ArrayList<Board> objectRepository) {
+    this.objectRepository = objectRepository;
   }
 
   @Override
@@ -21,7 +19,10 @@ public class BoardListHandler implements MenuHandler {
     System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR);
     System.out.printf("%-20s\t%-10s\t%s\n", "제목", "작성자", "작성일");
 
-    for(Board board : boardRepository.toArray()) {
+    Board[] boards = new Board[this.objectRepository.size()];
+    this.objectRepository.toArray(boards);
+
+    for(Board board : boards) {;
       System.out.printf("%-20s\t%-10s\t%s\n", board.title, board.writer, board.createdDate);
     }
   }

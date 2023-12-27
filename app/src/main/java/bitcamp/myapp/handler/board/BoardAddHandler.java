@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.board;
 
+import java.util.ArrayList;
 import bitcamp.util.AnsiEscape;
 import bitcamp.menu.MenuHandler;
 import bitcamp.menu.Menu;
@@ -9,10 +10,10 @@ import bitcamp.util.Prompt;
 public class BoardAddHandler implements MenuHandler {
 
   Prompt prompt;
-  BoardRepository boardRepository;
+  ArrayList<Board> objectRepository;
 
-  public BoardAddHandler(BoardRepository boardRepository, Prompt prompt) {
-    this.boardRepository = boardRepository;
+  public BoardAddHandler(ArrayList<Board> objectRepository, Prompt prompt) {
+    this.objectRepository = objectRepository;
     this.prompt = prompt;
   }
 
@@ -27,6 +28,6 @@ public class BoardAddHandler implements MenuHandler {
     board.writer = this.prompt.input("작성자? ");
     board.createdDate = this.prompt.input("작성일? ");
 
-    boardRepository.add(board);
+    objectRepository.add(board);
   }
 }

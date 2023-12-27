@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.board;
 
+import java.util.ArrayList;
 import bitcamp.util.AnsiEscape;
 import bitcamp.menu.MenuHandler;
 import bitcamp.menu.Menu;
@@ -9,10 +10,10 @@ import bitcamp.util.Prompt;
 public class BoardDeleteHandler implements MenuHandler {
 
   Prompt prompt;
-  BoardRepository boardRepository;
+  ArrayList<Board> objectRepository;
 
-  public BoardDeleteHandler(BoardRepository boardRepository, Prompt prompt) {
-    this.boardRepository = boardRepository;
+  public BoardDeleteHandler(ArrayList<Board> objectRepository, Prompt prompt) {
+    this.objectRepository = objectRepository;
     this.prompt = prompt;
   }
 
@@ -21,7 +22,7 @@ public class BoardDeleteHandler implements MenuHandler {
     System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR);
 
     int index = this.prompt.inputInt("번호? ");
-    if (this.boardRepository.remove(index) == null) {
+    if (this.objectRepository.remove(index) == null) {
       System.out.println("게시글 번호가 유효하지 않습니다.");
     }
   }

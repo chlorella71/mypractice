@@ -3,9 +3,12 @@
  */
 package bitcamp.myapp;
 
+import java.util.ArrayList;
+import bitcamp.myapp.vo.Member;
+import bitcamp.myapp.vo.Board;
+import bitcamp.myapp.vo.Assignment;
 import bitcamp.menu.MenuGroup;
 import bitcamp.menu.MenuItem;
-import bitcamp.myapp.handler.assignment.AssignmentRepository;
 import bitcamp.myapp.handler.assignment.AssignmentAddHandler;
 import bitcamp.myapp.handler.assignment.AssignmentViewHandler;
 import bitcamp.myapp.handler.assignment.AssignmentModifyHandler;
@@ -16,8 +19,6 @@ import bitcamp.myapp.handler.board.BoardDeleteHandler;
 import bitcamp.myapp.handler.board.BoardListHandler;
 import bitcamp.myapp.handler.board.BoardModifyHandler;
 import bitcamp.myapp.handler.board.BoardViewHandler;
-import bitcamp.myapp.handler.board.BoardRepository;
-import bitcamp.myapp.handler.Member.MemberRepository;
 import bitcamp.myapp.handler.Member.MemberViewHandler;
 import bitcamp.myapp.handler.Member.MemberModifyHandler;
 import bitcamp.myapp.handler.Member.MemberAddHandler;
@@ -39,10 +40,10 @@ public class App {
   public static void main(String[] args) throws Exception {
     Prompt prompt = new Prompt(System.in);
 
-    AssignmentRepository assignmentRepository = new AssignmentRepository();
-    BoardRepository boardRepository = new BoardRepository();
-    MemberRepository memberRepository = new MemberRepository();
-    BoardRepository greetingRepository = new BoardRepository();
+    ArrayList<Assignment> assignmentRepository = new ArrayList<>();
+    ArrayList<Board> boardRepository = new ArrayList<>();
+    ArrayList<Member> memberRepository = new ArrayList<>();
+    ArrayList<Board> greetingRepository = new ArrayList<>();
 
     MenuGroup mainMenu = new MenuGroup("메인");
 
@@ -51,7 +52,7 @@ public class App {
     assignmentMenu.add(new MenuItem("조회", new AssignmentViewHandler(assignmentRepository, prompt)));
     assignmentMenu.add(new MenuItem("수정", new AssignmentModifyHandler(assignmentRepository, prompt)));
     assignmentMenu.add(new MenuItem("삭제", new AssignmentDeleteHandler(assignmentRepository, prompt)));
-    assignmentMenu.add(new MenuItem("목록", new AssignmentListHandler(assignmentRepository, prompt)));
+    assignmentMenu.add(new MenuItem("목록", new AssignmentListHandler(assignmentRepository)));
     mainMenu.add(assignmentMenu);
 
     MenuGroup BoardMenu = new MenuGroup("게시글");
@@ -59,7 +60,7 @@ public class App {
     BoardMenu.add(new MenuItem("조회", new BoardViewHandler(boardRepository, prompt)));
     BoardMenu.add(new MenuItem("수정", new BoardModifyHandler(boardRepository, prompt)));
     BoardMenu.add(new MenuItem("삭제", new BoardDeleteHandler(boardRepository, prompt)));
-    BoardMenu.add(new MenuItem("목록", new BoardListHandler(boardRepository, prompt)));
+    BoardMenu.add(new MenuItem("목록", new BoardListHandler(boardRepository)));
     mainMenu.add(BoardMenu);
 
     MenuGroup MemberMenu = new MenuGroup("회원");
@@ -67,7 +68,7 @@ public class App {
     MemberMenu.add(new MenuItem("조회", new MemberViewHandler(memberRepository, prompt)));
     MemberMenu.add(new MenuItem("수정", new MemberModifyHandler(memberRepository, prompt)));
     MemberMenu.add(new MenuItem("삭제", new MemberDeleteHandler(memberRepository, prompt)));
-    MemberMenu.add(new MenuItem("목록", new MemberListHandler(memberRepository, prompt)));
+    MemberMenu.add(new MenuItem("목록", new MemberListHandler(memberRepository)));
     mainMenu.add(MemberMenu);
 
     MenuGroup greetingMenu = new MenuGroup("가입인사");
@@ -75,7 +76,7 @@ public class App {
     BoardMenu.add(new MenuItem("조회", new BoardViewHandler(greetingRepository, prompt)));
     BoardMenu.add(new MenuItem("수정", new BoardModifyHandler(greetingRepository, prompt)));
     BoardMenu.add(new MenuItem("삭제", new BoardDeleteHandler(greetingRepository, prompt)));
-    BoardMenu.add(new MenuItem("목록", new BoardListHandler(greetingRepository, prompt)));
+    BoardMenu.add(new MenuItem("목록", new BoardListHandler(greetingRepository)));
     mainMenu.add(greetingMenu);
 
     mainMenu.add(new MenuItem("도움말", new HelpHandler()));
