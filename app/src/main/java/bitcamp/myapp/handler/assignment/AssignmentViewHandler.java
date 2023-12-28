@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.assignment;
 
+import bitcamp.menu.AbstractMenuHandler;
 import java.util.ArrayList;
 import bitcamp.util.AnsiEscape;
 import bitcamp.util.Prompt;
@@ -7,20 +8,17 @@ import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.vo.Assignment;
 
-public class AssignmentViewHandler implements MenuHandler {
-
-  Prompt prompt;
-  ArrayList<Assignment> objectRepository;
+public class AssignmentViewHandler extends AbstractMenuHandler {
+  private ArrayList<Assignment> objectRepository;
 
   public AssignmentViewHandler (ArrayList<Assignment> objectRepository, Prompt prompt) {
+    super(prompt);
     this.objectRepository = objectRepository;
-    this.prompt = prompt;
+
   }
 
   @Override
-  public void action(Menu menu) {
-    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR);
-
+  protected void action() {
     int index = this.prompt.inputInt("번호? ");
     Assignment assignment = (Assignment) this.objectRepository.get(index);
     if (assignment == null) {

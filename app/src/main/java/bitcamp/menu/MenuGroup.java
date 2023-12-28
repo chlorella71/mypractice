@@ -3,22 +3,24 @@ package bitcamp.menu;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.util.AnsiEscape;
 import bitcamp.util.Prompt;
-public class MenuGroup implements Menu {
+public class MenuGroup extends AbstractMenu {
 
-  String title;
+
   Menu[] menus = new Menu[10];
   int menuSize;
 
   public MenuGroup(String title) {
-    this.title = title;
+    super(title);
   }
+
+
 
   @Override
   public void execute(Prompt prompt) {
     this.printMenu();
 
     while (true) {
-      String input = prompt.input("%s> ", this.title);
+      String input = prompt.input("%s> ", this.getTitle());
 
       if (input.equals("menu")) {
         this.printMenu();
@@ -38,7 +40,7 @@ public class MenuGroup implements Menu {
   }
 
   private void printMenu() {
-      System.out.printf("[%s]\n", this.title);
+      System.out.printf("[%s]\n", this.getTitle());
 
       for (int i = 0; i < this.menuSize; i++) {
         System.out.printf("%d. %s\n", (i + 1), menus[i].getTitle());
@@ -47,10 +49,7 @@ public class MenuGroup implements Menu {
       System.out.printf("0. %s\n", "이전");
     }
 
-  @Override
-  public String getTitle() {
-    return this.title;
-  }
+
 
   public void add(Menu menu) {
     if (this.menuSize == this.menus.length) {

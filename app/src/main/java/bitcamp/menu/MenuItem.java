@@ -1,13 +1,12 @@
 package bitcamp.menu;
 
 import bitcamp.util.Prompt;
-public class MenuItem implements Menu{
+public class MenuItem extends AbstractMenu{
 
-  String title;
   MenuHandler menuHandler;
 
   public MenuItem(String title) {
-    this.title = title;
+    super(title);
   }
 
   public MenuItem(String title, MenuHandler menuHandler) {
@@ -19,10 +18,5 @@ public class MenuItem implements Menu{
     if (this.menuHandler != null) {
       this.menuHandler.action(this);
     }
-  }
-
-  @Override
-  public String getTitle() {
-    return this.title;
   }
 }
