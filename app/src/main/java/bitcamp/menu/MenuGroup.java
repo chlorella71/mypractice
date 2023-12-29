@@ -1,22 +1,27 @@
 package bitcamp.menu;
 
+import bitcamp.util.LinkedList;
+import bitcamp.util.List;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.util.AnsiEscape;
 import bitcamp.util.Prompt;
+import bitcamp.util.Stack;
+
 public class MenuGroup extends AbstractMenu {
 
+  private List<Menu> menus = new LinkedList<>();
 
-  Menu[] menus = new Menu[10];
-  int menuSize;
-
-  public MenuGroup(String title) {
-    super(title);
+  private MenuGroup(String title, Stack<String> breadcrumb) {
+    super(title, breadcrumb);
   }
 
-
+  public static MenuGroup getInstance(String title) {
+    return new MenuGroup(title, new Stack<String>());
+  }
 
   @Override
   public void execute(Prompt prompt) {
+    breadcrumb.push(this.title);
     this.printMenu();
 
     while (true) {
@@ -29,61 +34,47 @@ public class MenuGroup extends AbstractMenu {
         break;
       }
 
-      int menuN0 = Integer.parseInt(input);
-      if (menuN0 < 1 || menuN0 > this.menuSize) {
+      try {
+        int menuN0 = Integer.parseInt(input);
+        if (menuN0 < 1 || menuN0 > this.menus.size()) {
           System.out.println("메뉴 번호가 옳지 않습니다.");
           continue;
-      }
+        }
 
-      this.menus[menuN0 - 1].execute(prompt);
+        this.menus.get(menuN0 - 1).execute(prompt);
+      } catch (Exception e) {
+        System.out.println("메뉴가 옳지 않습니다!");
+      }
     }
+    breadcrumb.pop();
   }
 
   private void printMenu() {
       System.out.printf("[%s]\n", this.getTitle());
 
-      for (int i = 0; i < this.menuSize; i++) {
-        System.out.printf("%d. %s\n", (i + 1), menus[i].getTitle());
+      for (int i = 0; i < this.menus.size(); i++) {
+        System.out.printf("%d. %s\n", (i + 1), menus.get(i).getTitle());
       }
 
       System.out.printf("0. %s\n", "이전");
     }
-
-
-
   public void add(Menu menu) {
-    if (this.menuSize == this.menus.length) {
-      int oldSize = this.menus.length;
-      int newSize = oldSize + (oldSize >> 1);
-
-      Menu[] arr = new Menu[newSize];
-    for(int i = 0; i < oldSize; i++) {
-      arr[i] = this.menus[i];
-    }
-
-    this.menus = arr;
+    this.menus.add(menu);
   }
-    this.menus[this.menuSize++] = menu;
+
+  public MenuItem addItem(String title, MenuHandler handler) {
+    MenuItem menuItem = new MenuItem(title, this.breadcrumb, handler);
+    this.add(menuItem);
+    return menuItem;
+  }
+
+  public MenuGroup addGroup(String title) {
+    MenuGroup menuGroup = new MenuGroup(title, this.breadcrumb);
+    this.add(menuGroup);
+    return menuGroup;
   }
 
   public void remove(Menu menu) {
-    int index = this.indexOf(menu);
-    if (index == -1) {
-      return;
-    }
-
-    for (int i = index; i < (this.menuSize - 1); i++) {
-      this.menus[i] = this.menus[i + 1];
-    }
-    this.menus[--this.menuSize] = null;
-  }
-
-  int indexOf(Menu menu) {
-    for (int i = 0; i < menuSize; i++) {
-      if (menu == this.menus[i]) {
-        return i;
-      }
-    }
-    return -1;
+    this.menus.remove(menu);
   }
 }

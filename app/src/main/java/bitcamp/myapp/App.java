@@ -3,7 +3,9 @@
  */
 package bitcamp.myapp;
 
-import java.util.ArrayList;
+import bitcamp.util.ArrayList;
+import bitcamp.util.LinkedList;
+import bitcamp.util.List;
 import bitcamp.myapp.vo.Member;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Assignment;
@@ -40,48 +42,58 @@ public class App {
   public static void main(String[] args) throws Exception {
     Prompt prompt = new Prompt(System.in);
 
-    ArrayList<Assignment> assignmentRepository = new ArrayList<>();
-    ArrayList<Board> boardRepository = new ArrayList<>();
-    ArrayList<Member> memberRepository = new ArrayList<>();
-    ArrayList<Board> greetingRepository = new ArrayList<>();
+    List<Assignment> assignmentRepository = new LinkedList<Assignment>() {
+    };
+    List<Board> boardRepository = new LinkedList<>();
+    List<Member> memberRepository = new ArrayList<>();
+    List<Board> greetingRepository = new ArrayList<>();
 
-    MenuGroup mainMenu = new MenuGroup("메인");
+    MenuGroup mainMenu = new MenuGroup.getInstance("메인");
 
-    MenuGroup assignmentMenu = new MenuGroup("과제");
+    MenuGroup assignmentMenu = new mainMenu.addGroup("과제");
     assignmentMenu.add(new MenuItem("등록", new AssignmentAddHandler(assignmentRepository, prompt)));
     assignmentMenu.add(new MenuItem("조회", new AssignmentViewHandler(assignmentRepository, prompt)));
-    assignmentMenu.add(new MenuItem("수정", new AssignmentModifyHandler(assignmentRepository, prompt)));
-    assignmentMenu.add(new MenuItem("삭제", new AssignmentDeleteHandler(assignmentRepository, prompt)));
-    assignmentMenu.add(new MenuItem("목록", new AssignmentListHandler(assignmentRepository)));
+    assignmentMenu.add(
+      new MenuItem("수정", new AssignmentModifyHandler(assignmentRepository, prompt)));
+    assignmentMenu.add(
+      new MenuItem("삭제", new AssignmentDeleteHandler(assignmentRepository, prompt)));
+    assignmentMenu.add(new MenuItem("목록", new AssignmentListHandler(assignmentRepository, prompt)));
     mainMenu.add(assignmentMenu);
 
-    MenuGroup BoardMenu = new MenuGroup("게시글");
+    MenuGroup BoardMenu = new mainMenu.addGroup("게시글");
     BoardMenu.add(new MenuItem("등록", new BoardAddHandler(boardRepository, prompt)));
     BoardMenu.add(new MenuItem("조회", new BoardViewHandler(boardRepository, prompt)));
     BoardMenu.add(new MenuItem("수정", new BoardModifyHandler(boardRepository, prompt)));
     BoardMenu.add(new MenuItem("삭제", new BoardDeleteHandler(boardRepository, prompt)));
-    BoardMenu.add(new MenuItem("목록", new BoardListHandler(boardRepository)));
+    BoardMenu.add(new MenuItem("목록", new BoardListHandler(boardRepository, prompt)));
     mainMenu.add(BoardMenu);
 
-    MenuGroup MemberMenu = new MenuGroup("회원");
+    MenuGroup MemberMenu = new mainMenu.addGroup("회원");
     MemberMenu.add(new MenuItem("등록", new MemberAddHandler(memberRepository, prompt)));
     MemberMenu.add(new MenuItem("조회", new MemberViewHandler(memberRepository, prompt)));
     MemberMenu.add(new MenuItem("수정", new MemberModifyHandler(memberRepository, prompt)));
     MemberMenu.add(new MenuItem("삭제", new MemberDeleteHandler(memberRepository, prompt)));
-    MemberMenu.add(new MenuItem("목록", new MemberListHandler(memberRepository)));
+    MemberMenu.add(new MenuItem("목록", new MemberListHandler(memberRepository, prompt)));
     mainMenu.add(MemberMenu);
 
-    MenuGroup greetingMenu = new MenuGroup("가입인사");
+    MenuGroup greetingMenu = new mainMenu.addGroup("가입인사");
     BoardMenu.add(new MenuItem("등록", new BoardAddHandler(greetingRepository, prompt)));
     BoardMenu.add(new MenuItem("조회", new BoardViewHandler(greetingRepository, prompt)));
     BoardMenu.add(new MenuItem("수정", new BoardModifyHandler(greetingRepository, prompt)));
     BoardMenu.add(new MenuItem("삭제", new BoardDeleteHandler(greetingRepository, prompt)));
-    BoardMenu.add(new MenuItem("목록", new BoardListHandler(greetingRepository)));
+    BoardMenu.add(new MenuItem("목록", new BoardListHandler(greetingRepository, prompt)));
     mainMenu.add(greetingMenu);
 
     mainMenu.add(new MenuItem("도움말", new HelpHandler()));
 
-    mainMenu.execute(prompt);
-    prompt.close();
+    while (true) {
+      try {
+        mainMenu.execute(prompt);
+        prompt.close();
+        break;
+      } catch (Exception e) {
+        System.out.println("예외 발생!");
+      }
+    }
   }
 }

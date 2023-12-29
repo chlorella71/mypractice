@@ -1,6 +1,7 @@
 package bitcamp.myapp.handler.Member;
 
 import bitcamp.menu.AbstractMenuHandler;
+import bitcamp.util.List;
 import java.util.ArrayList;
 import bitcamp.util.AnsiEscape;
 import bitcamp.menu.MenuHandler;
@@ -10,23 +11,24 @@ import bitcamp.util.Prompt;
 
 public class MemberViewHandler extends AbstractMenuHandler {
 
-  private ArrayList<Member> objectRepository;
+  private List<Member> objectRepository;
 
-  public MemberViewHandler(ArrayList<Member> objectRepository, Prompt prompt) {
+  public MemberViewHandler(List<Member> objectRepository, Prompt prompt) {
     super(prompt);
     this.objectRepository = objectRepository;
   }
 
   @Override
   protected void action() {
+    try {
     int index = this.prompt.inputInt("번호? ");
     Member member = (Member) this.objectRepository.get(index);
-    if (member == null) {
-      System.out.println("회원 번호가 유효하지 않습니다.");
-      return;
-    }
     System.out.printf("이메일: %s\n", member.getEmail());
     System.out.printf("이름: %s\n", member.getName());
     System.out.printf("가입일: %s\n", member.getCreatedDate());
+
+    } catch (Exception e) {
+      System.out.println("조회 오류!");
+    }
   }
 }
