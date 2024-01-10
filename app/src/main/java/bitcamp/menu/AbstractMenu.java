@@ -2,10 +2,10 @@ package bitcamp.menu;
 
 import bitcamp.util.Stack;
 
-public abstract class AbstractMenu implements Menu{
+public abstract class AbstractMenu implements Menu {
 
   protected Stack<String> breadcrumb;
-  private String title;
+  String title;
 
   public AbstractMenu(String title, Stack<String> breadcrumb) {
     this.title = title;

@@ -25,7 +25,7 @@ public class MenuGroup extends AbstractMenu {
     this.printMenu();
 
     while (true) {
-      String input = prompt.input("%s> ", this.getTitle());
+      String input = prompt.input("%s> ", this.getMenuPath());
 
       if (input.equals("menu")) {
         this.printMenu();
@@ -42,6 +42,7 @@ public class MenuGroup extends AbstractMenu {
         }
 
         this.menus.get(menuN0 - 1).execute(prompt);
+
       } catch (Exception e) {
         System.out.println("메뉴가 옳지 않습니다!");
       }
